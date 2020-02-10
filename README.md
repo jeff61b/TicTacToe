@@ -52,7 +52,7 @@ Below your 3x3 grid, you should have a 'reset' button that will reset the game.
 
 > Students will often jump straight in to building a complex algorithm to
 > determine if a player has won. While the enthusiasm is great, it's often
-> better to start with a 'computer-scored' version and then work towards a 'smart' version.
+> better to start with a 'player-scored' version and then work towards a 'smart' version.
 
 The goal of this phase is to make it so that players don't have to manually
 score the game. Instead, you're going to write some code that will check the
