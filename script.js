@@ -7,13 +7,14 @@ let button5 = document.querySelector("#square5");
 let button6 = document.querySelector("#square6");
 let button7 = document.querySelector("#square7");
 let button8 = document.querySelector("#square8");
+let reset = document.querySelector("#reset-button");
 
 let buttonArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let buttonIndex = 0;
 let myTurn = "blue";
+let freeze = false;
 let message = document.querySelector("#game-msg");
-console.log(message);
-message.innerHTML = "test message";
+message.innerHTML = "  ";
 const click0 = (event) => {
   updateButton(0);
 };
@@ -50,41 +51,53 @@ const click8 = (event) => {
   updateButton(8);
 };
 
+function refresh() {
+  window.parent.location = window.parent.location.href;
+  freeze = false;
+}
+
+const resetGame = (event) => {
+  buttonArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  clickedButton.setAttribute("style", "background-color: gray");
+  location.reload;
+};
+
 function checkWinner() {
-  console.log(buttonArray);
+  let draw = true;
   if (buttonArray[0] > 0) {
     if (
       buttonArray[0] === buttonArray[3] &&
       buttonArray[0] === buttonArray[6]
     ) {
+      draw = false;
+      freeze = true;
       if (buttonArray[0] === 1) {
-        console.log("Blue wins");
         message.innerHTML = "Blue wins!";
-        console.log(buttonArray);
       } else {
-        message.innerHTML = "Red wins";
-        console.log("Red wins");
+        message.innerHTML = "Red wins!";
       }
     } else {
       if (
         buttonArray[0] === buttonArray[1] &&
         buttonArray[0] === buttonArray[2]
       ) {
+        draw = false;
+        freeze = true;
         if (buttonArray[0] === 1) {
-          console.log("Blue wins");
           message.innerHTML = "Blue wins!";
         } else {
-          console.log("Red wins");
-          message.innerHTML = "Red wins";
+          message.innerHTML = "Red wins!";
         }
       } else if (
         buttonArray[0] === buttonArray[4] &&
         buttonArray[0] === buttonArray[8]
       ) {
+        draw = false;
+        freeze = true;
         if (buttonArray[0] === 1) {
           message.innerHTML = "Blue wins!";
         } else {
-          message.innerHTML = "Red wins";
+          message.innerHTML = "Red wins!";
         }
       }
     }
@@ -95,20 +108,24 @@ function checkWinner() {
       buttonArray[2] === buttonArray[4] &&
       buttonArray[2] === buttonArray[6]
     ) {
+      draw = false;
+      freeze = true;
       if (buttonArray[2] === 1) {
         message.innerHTML = "Blue wins!";
       } else {
-        message.innerHTML = "Red wins";
+        message.innerHTML = "Red wins!";
       }
     }
     if (
       buttonArray[2] === buttonArray[5] &&
       buttonArray[2] === buttonArray[8]
     ) {
+      draw = false;
+      freeze = true;
       if (buttonArray[2] === 1) {
         message.innerHTML = "Blue wins!";
       } else {
-        message.innerHTML = "Red wins";
+        message.innerHTML = "Red wins!";
       }
     }
   }
@@ -117,10 +134,12 @@ function checkWinner() {
       buttonArray[1] === buttonArray[4] &&
       buttonArray[1] === buttonArray[7]
     ) {
+      draw = false;
+      freeze = true;
       if (buttonArray[1] === 1) {
         message.innerHTML = "Blue wins!";
       } else {
-        message.innerHTML = "Red wins";
+        message.innerHTML = "Red wins!";
       }
     }
   }
@@ -129,10 +148,12 @@ function checkWinner() {
       buttonArray[3] === buttonArray[4] &&
       buttonArray[3] === buttonArray[5]
     ) {
+      draw = false;
+      freeze = true;
       if (buttonArray[3] === 1) {
         message.innerHTML = "Blue wins!";
       } else {
-        message.innerHTML = "Red wins";
+        message.innerHTML = "Red wins!";
       }
     }
   }
@@ -141,41 +162,49 @@ function checkWinner() {
       buttonArray[6] === buttonArray[7] &&
       buttonArray[6] === buttonArray[8]
     ) {
+      draw = false;
+      freeze = true;
       if (buttonArray[6] === 1) {
         message.innerHTML = "Blue wins!";
       } else {
-        message.innerHTML = "Red wins";
+        message.innerHTML = "Red wins!";
       }
     }
+  }
+  for (let i = 0; i <= 8; i++) {
+    if (buttonArray[i] === 0) {
+      draw = false;
+    }
+  }
+  if (draw === true) {
+    message.innerHTML = "It's a tie. No winner!";
+    freeze = true;
   }
 }
 
 function updateButton(buttonIndex) {
-  console.log(myTurn + " " + buttonIndex);
-  console.log(buttonArray);
-  console.log("Button " + buttonIndex + " clicked " + myTurn);
+  if (freeze === true) {
+    return;
+  }
   if (buttonArray[buttonIndex] > 0) {
-    // this button was already clicked
-    console.log("You cannot click there");
-    //message = document.querySelector("#game-msg").value;
-    console.log(message);
+    message.innerHTML = "You cannot click there";
   } else {
-    // this button was not previously clicked
+    message.innerHTML = " ";
     if (myTurn === "blue") {
       buttonArray[buttonIndex] = 1;
       let myTest = document.querySelector("#square" + buttonIndex);
-      console.log(myTest);
       let clickedButton = document.querySelector("#square" + buttonIndex);
       clickedButton.setAttribute("style", "background-color: " + myTurn);
       myTurn = "red";
+      message.innerHTML = "Red's turn";
       checkWinner();
     } else if (myTurn === "red") {
       buttonArray[buttonIndex] = 2;
       let myTest = document.querySelector("#square" + buttonIndex);
-      console.log(myTest);
       let clickedButton = document.querySelector("#square" + buttonIndex);
       clickedButton.setAttribute("style", "background-color: " + myTurn);
       myTurn = "blue";
+      message.innerHTML = "Blue's turn";
       checkWinner();
     }
   }
@@ -190,3 +219,5 @@ button5.addEventListener("click", click5);
 button6.addEventListener("click", click6);
 button7.addEventListener("click", click7);
 button8.addEventListener("click", click8);
+
+reset.addEventListener("click", resetGame);
